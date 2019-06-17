@@ -1,0 +1,3 @@
+rootProject.name = 'WifiAttendance'
+
+include ':app'
