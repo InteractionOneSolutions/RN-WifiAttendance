@@ -12,15 +12,7 @@ const BeaconScanTask = async data => {
   // navigator.geolocation.getCurrentPosition(position => {
   //   console.log(position.coords);
   // });
-  console.log("DATA>>>", data);
-  Beacons.detectIBeacons();
-  DeviceEventEmitter.addListener("beaconsDidRange", data => {
-    console.log("Found beacons!2222", data.beacons);
-    Toast.show({
-      text: "Beacons Found " + data.beacons.length,
-      duration: 3000
-    });
-  });
+  console.log("BeaconScanTask DATA>>>", data);
 };
 
 AppRegistry.registerHeadlessTask("BeaconScanTask", () => BeaconScanTask);

@@ -8,6 +8,7 @@ import android.location.Location;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.facebook.react.HeadlessJsTaskService;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -90,5 +91,10 @@ public class BackgroundScanModule extends ReactContextBaseJavaModule  {
         map.putDouble("timestamp", new Date().getTime());
 
         getReactApplicationContext().getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("updateBeacons", map);
+
+        Intent serviceIntent = new Intent(this.getReactApplicationContext(), HeadlessService.class);
+        serviceIntent.putExtra("beaconData", new Gson().toJson(beacon));
+        this.getReactApplicationContext().startService(serviceIntent);
+        HeadlessJsTaskService.acquireWakeLockNow(this.getReactApplicationContext());
     }
 }
