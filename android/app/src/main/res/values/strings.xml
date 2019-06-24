@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">WifiAttendance</string>
+    <!--Kontakt API key-->
+    <string name="kontakt_io_api_key">uZFtuNiyxIVhdbijgqsyQHtQkfyyKYNF</string>
+    <string name="app_name">Beacon Attendance Logger</string>
 </resources>

@@ -19,7 +19,7 @@ public class CustomPackage implements ReactPackage {
         List<NativeModule> modules = new ArrayList<>();
 
         modules.add(new GeoLocationModule(reactContext));
-
+        modules.add(new BackgroundScanModule(reactContext));
         return modules;
     }
 

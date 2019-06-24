@@ -7,12 +7,16 @@
     "test": "jest"
   },
   "dependencies": {
-    "react": "16.8.3",
-    "react-native": "0.59.9",
     "@react-native-community/async-storage": "^1.4.2",
     "mobx": "^5.9.4",
     "mobx-react": "^5.4.4",
     "moment": "^2.24.0",
+    "native-base": "^2.12.1",
+    "react": "16.8.3",
+    "react-native": "0.59.9",
+    "react-native-android-wifi": "0.0.41",
+    "react-native-background-task": "^0.2.1",
+    "react-native-beacons-manager": "^1.0.7",
     "react-native-fetch-blob": "^0.10.8",
     "react-native-firebase": "^5.3.1",
     "react-native-responsive-screen": "^1.2.2",

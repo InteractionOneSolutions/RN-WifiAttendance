@@ -12,16 +12,15 @@ import {
   StyleSheet,
   Text,
   View,
-  DeviceEventEmitter
+  AppRegistry,
+  DeviceEventEmitter,
+  PermissionsAndroid
 } from "react-native";
 import { NativeModules } from "react-native";
+import { Toast } from "native-base";
 
-const instructions = Platform.select({
-  ios: "Press Cmd+R to reload,\n" + "Cmd+D or shake for dev menu",
-  android:
-    "Double tap R on your keyboard to reload,\n" +
-    "Shake or press menu button for dev menu"
-});
+import Beacons from "react-native-beacons-manager";
+import BackgroundTask from "react-native-background-task";
 
 type Props = {};
 export default class App extends Component<Props> {
@@ -32,15 +31,70 @@ export default class App extends Component<Props> {
     };
   }
 
-  componentDidMount() {
-    NativeModules.GeoLocation.startService();
+  componentWillMount() {}
 
-    DeviceEventEmitter.addListener("updateLocation", geoData => {
+  async checkStatus() {
+    const status = await BackgroundTask.statusAsync();
+    console.log("Status>>", status.available);
+  }
+
+  async componentDidMount() {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: "Wifi networks",
+          message: "We need your permission in order to find wifi networks"
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log("Thank you for your permission! :)");
+      } else {
+        console.log(
+          "You will not able to retrieve wifi available networks list"
+        );
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+
+    // Beacons.detectIBeacons();
+    // Beacons.setForegroundScanPeriod(1000);
+    // Beacons.setBackgroundScanPeriod(1000);
+    // Beacons.setBackgroundBetweenScanPeriod(1000);
+
+    // try {
+    //   await Beacons.startRangingBeaconsInRegion("REGION1");
+    //   console.log(`Beacons ranging started succesfully!`);
+    // } catch (err) {
+    //   console.log(`Beacons ranging not started, error: ${error}`);
+    // }
+
+    // // Print a log of the detected iBeacons (1 per second)
+    // DeviceEventEmitter.addListener("beaconsDidRange", data => {
+    //   console.log("Found1 beacons!", JSON.stringify(data.beacons));
+    // });
+
+    // BackgroundTask.schedule({
+    //   period: 10
+    // });
+
+    NativeModules.BackgroundScan.startService();
+
+    DeviceEventEmitter.addListener("updateBeacons", geoData => {
       console.log(JSON.stringify(geoData));
       this.setState({
-        geodata: geoData.coords.latitude + "," + geoData.coords.longitude
+        geodata: geoData.beaconData.minorId + "," + geoData.beaconData.majorId
       });
     });
+
+    // NativeModules.WifiScanner.startService();
+    // DeviceEventEmitter.addListener("updateWifi", wifi => {
+    //   //console.log(JSON.stringify(wifi));
+    //   this.setState({
+    //     geodata: wifi.wifiResponse
+    //   });
+    // });
   }
   render() {
     return (
